@@ -9,7 +9,7 @@ RUN /bin/rm /etc/apt/sources.list \
   } > /etc/apt/sources.list.d/mirror.jp.list
 
 RUN apt-get update \
-  && apt-get install --no-install-recommends -y \
+  && apt-get install --no-install-recommends -y  --allow-downgrades\
     apt-transport-https \
     apt-utils \
     build-essential \
@@ -19,7 +19,8 @@ RUN apt-get update \
     git \
     gnupg2 \
     libfreetype6-dev \
-    libicu-dev \
+    libicu57=57.1-6+deb9u3 \
+    libicu-dev=57.1-6+deb9u3 \
     libjpeg62-turbo-dev \
     libpng-dev \
     libpq-dev \
