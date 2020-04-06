@@ -9,7 +9,7 @@ RUN /bin/rm /etc/apt/sources.list \
   } > /etc/apt/sources.list.d/mirror.jp.list
 
 RUN apt-get update \
-  && apt-get install --no-install-recommends -y  --allow-downgrades\
+  && apt-get install --no-install-recommends -y --allow-downgrades\
     apt-transport-https \
     apt-utils \
     build-essential \
@@ -55,6 +55,17 @@ EXPOSE 443
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 # Override with custom configuration settings
 COPY dockerbuild/php.ini $PHP_INI_DIR/conf.d/
+
+# New Relic
+RUN apt-get update \
+  && apt-get install wget --no-install-recommends -y
+
+RUN wget -O - https://download.newrelic.com/548C16BF.gpg | apt-key add - \
+  && sh -c 'echo "deb http://apt.newrelic.com/debian/ newrelic non-free" \
+  > /etc/apt/sources.list.d/newrelic.list' \
+  && apt-get update \
+  && apt-get install newrelic-php5  --no-install-recommends -y
+COPY dockerbuild/newrelic.ini $PHP_INI_DIR/conf.d/
 
 COPY . ${APACHE_DOCUMENT_ROOT}
 
