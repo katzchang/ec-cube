@@ -64,7 +64,13 @@ RUN wget -O - https://download.newrelic.com/548C16BF.gpg | apt-key add - \
   && sh -c 'echo "deb http://apt.newrelic.com/debian/ newrelic non-free" \
   > /etc/apt/sources.list.d/newrelic.list' \
   && apt-get update \
-  && apt-get install newrelic-php5  --no-install-recommends -y
+  && apt-get install newrelic-php5  --no-install-recommends -y \
+  && newrelic-install install
+#RUN wget -O newrelic-php5-9.9.0.260-linux.tar.gz https://download.newrelic.com/php_agent/release/newrelic-php5-9.9.0.260-linux.tar.gz \
+#  && gzip -dc newrelic-php5-9.9.0.260-linux.tar.gz | tar xf - \
+#  && cd newrelic-php5-9.9.0.260-linux \
+#  && ./newrelic-install install
+
 COPY dockerbuild/newrelic.ini $PHP_INI_DIR/conf.d/
 
 COPY . ${APACHE_DOCUMENT_ROOT}
